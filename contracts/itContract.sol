@@ -1,8 +1,8 @@
 pragma solidity ^0.8.0;
 
 contract itContract {
-   string public name = 'Skadno'; //название имени нашего токена
-   string public symbol = 'SKD'; //символ токена
+   string public name = "Skadno"; //название имени нашего токена
+   string public symbol = "SKD"; //символ токена
    uint8 public decimals = 18; //количество десятичных знаков
    uint256 public totalSupply; //общее количество токенов, что будет вычислено позже
 
@@ -16,7 +16,7 @@ contract itContract {
    // конструктор выполняется один раз при развёртнывании контракта и создает начальное количество токенов присваивая их создателю контракта, т.е. нам.
    constructor(uint256 _initialSupply) {
       // определяем общее количество токенов с учетом десятичных знаков,
-      totalSupply = _initialSupply + 10 ** uint256(decimals);
+      totalSupply = _initialSupply * (10 ** uint256(decimals));
       // а так же присваиваем весь начальный выпуск контракту
       balanceOf[msg.sender] = totalSupply;
    }
@@ -31,6 +31,5 @@ contract itContract {
       balanceOf[_to] += _value;
       // логирует операцию
       emit Transfer(msg.sender, _to, _value);
-      return true;
    }
 }

@@ -1,0 +1,35 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-42e019b5bab4454a9f2970a94bc805dc792e8dad",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/itContract.sol": "project/contracts/itContract.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/itContract.sol": {
+        "content": "pragma solidity ^0.8.0;\n\ncontract itContract {\n   string public name = \"Skadno\"; //название имени нашего токена\n   string public symbol = \"SKD\"; //символ токена\n   uint8 public decimals = 18; //количество десятичных знаков\n   uint256 public totalSupply; //общее количество токенов, что будет вычислено позже\n\n   // переменная для хранения балансов, связывает адрес с их балансами\n   mapping (address => uint256 ) public balanceOf;\n\n   // так же сразу же указываем событие для логирования операций перевода, трансфер\n   event Transfer (address indexed from, address indexed to, uint256 value);\n\n   // описание конструктора для начальной эмиссии токенов\n   // конструктор выполняется один раз при развёртнывании контракта и создает начальное количество токенов присваивая их создателю контракта, т.е. нам.\n   constructor(uint256 _initialSupply) {\n      // определяем общее количество токенов с учетом десятичных знаков,\n      totalSupply = _initialSupply * (10 ** uint256(decimals));\n      // а так же присваиваем весь начальный выпуск контракту\n      balanceOf[msg.sender] = totalSupply;\n   }\n\n   // создаем функцию для перевода токенов, эта функция позволяет отправлять токены с одного адреса на другой\n   function transfer(address _to, uint256 _value) public {\n      // она проверят что у отправителя достаточно токенов\n      require(balanceOf[msg.sender] >= _value);\n      // уменьшает его баланс\n      balanceOf[msg.sender] -= _value;\n      // увеличивает баланс получателя\n      balanceOf[_to] += _value;\n      // логирует операцию\n      emit Transfer(msg.sender, _to, _value);\n   }\n}"
+      }
+    }
+  }
+}
